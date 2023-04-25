@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -12,8 +13,8 @@ namespace TrainingPractice_02
 {
     public partial class Form1 : Form
     {
-        private int Number;
-        private int Number2;
+        private int NumberFrom;
+        private int NumberWhere;
         private int True = 0;
         private int False = 0;
 
@@ -71,18 +72,18 @@ namespace TrainingPractice_02
                 MessageBox.Show("Введите число в правильной системе счистления!");
                 return false;
             }
-            Number = notation;
+            NumberFrom = notation;
             return true;
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            CheckedFalse();
+            ClearButton(panel1);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var otvet = ConvertNotation(Number,Number2);
+            var otvet = ConvertNotation(NumberFrom, NumberWhere);
 
             if(textBox2.Text==otvet)
             {
@@ -90,11 +91,14 @@ namespace TrainingPractice_02
                 True++;
                 textBox1.Clear();
                 textBox2.Clear();
-                CheckedFalse();
+                ClearButton(panel1);
+                ClearButton(panel2);
             }
             else
             {             
                 False++;
+                textBox2.Clear();
+                textBox2.Focus();
                 MessageBox.Show($"Неправильно");
             }
             UpdateLabel();
@@ -122,16 +126,16 @@ namespace TrainingPractice_02
                 switch (button.Text)
                 {
                     case "10":
-                        Number2 = 10;
+                        NumberWhere = 10;
                         break;
                     case "2":
-                        Number2 = 2;
+                        NumberWhere = 2;
                         break;
                     case "8":
-                        Number2 = 8;
+                        NumberWhere = 8;
                         break;
                     case "16":
-                        Number2 = 16;
+                        NumberWhere = 16;
                         break;
                 }
             }
@@ -147,12 +151,15 @@ namespace TrainingPractice_02
         }
 
 
-        private void CheckedFalse()
+        private void ClearButton(Panel panel)
         {
-            radioButton110.Checked = false;
-            radioButton18.Checked = false;
-            radioButton12.Checked = false;
-            radioButton116.Checked = false;
+            foreach(var item in panel.Controls)
+            {
+                if(item is RadioButton radio)
+                {
+                    radio.Checked = false;
+                }
+            }
         }
 
         private void UpdateLabel()
@@ -163,8 +170,9 @@ namespace TrainingPractice_02
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var otvet = ConvertNotation(Number, Number2);
-            CheckedFalse();
+            var otvet = ConvertNotation(NumberFrom, NumberWhere);
+            ClearButton(panel1);
+            ClearButton(panel2);
             textBox1.Clear();
             textBox2.Clear();
             MessageBox.Show($"Правильный ответ: {otvet}");
