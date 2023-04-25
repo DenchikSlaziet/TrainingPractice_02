@@ -20,7 +20,7 @@ namespace TrainingPractice_02
         public Form1()
         {
             InitializeComponent();
-            textBox1.Text = "1011101";
+            textBox1.Text = GetRandomValue();
         }
 
 
@@ -46,6 +46,12 @@ namespace TrainingPractice_02
                         break;
                     case "8":
                         if (!IsTrue(8))
+                        {
+                            button.Checked = false;
+                        }
+                        break;
+                    case "16":
+                        if (!IsTrue(16))
                         {
                             button.Checked = false;
                         }
@@ -96,7 +102,15 @@ namespace TrainingPractice_02
 
         private string ConvertNotation(int number,int number2)
         {
-            return Convert.ToString(Convert.ToInt32(textBox1.Text, number), number2);
+            try
+            {
+                return Convert.ToString(Convert.ToInt32(textBox1.Text, number), number2);
+            }
+            catch
+            {
+                MessageBox.Show("Слишком большое число!!","Ошибка",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                return "Ошибка";
+            }
         }
 
         private void radioButton6_Click(object sender, EventArgs e)
@@ -116,14 +130,17 @@ namespace TrainingPractice_02
                     case "8":
                         Number2 = 8;
                         break;
+                    case "16":
+                        Number2 = 16;
+                        break;
                 }
             }
         }
 
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
         {
-            button1.Enabled = (radioButton1.Checked || radioButton2.Checked || radioButton3.Checked) &&
-                (radioButton4.Checked || radioButton5.Checked || radioButton6.Checked) && 
+            button1.Enabled = (radioButton110.Checked || radioButton18.Checked || radioButton12.Checked || radioButton116.Checked) &&
+                (radioButton22.Checked || radioButton82.Checked || radioButton210.Checked || radioButton216.Checked) && 
                 !string.IsNullOrWhiteSpace(textBox2.Text) && !string.IsNullOrWhiteSpace(textBox1.Text);
 
             button2.Enabled = button1.Enabled;
@@ -132,9 +149,10 @@ namespace TrainingPractice_02
 
         private void CheckedFalse()
         {
-            radioButton1.Checked = false;
-            radioButton2.Checked = false;
-            radioButton3.Checked = false;
+            radioButton110.Checked = false;
+            radioButton18.Checked = false;
+            radioButton12.Checked = false;
+            radioButton116.Checked = false;
         }
 
         private void UpdateLabel()
@@ -150,6 +168,30 @@ namespace TrainingPractice_02
             textBox1.Clear();
             textBox2.Clear();
             MessageBox.Show($"Правильный ответ: {otvet}");
+        }
+
+        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+            char number = e.KeyChar;
+
+            if (!Char.IsDigit(number) && number != 8 && number != 65 && number != 66 && number != 67 && number != 68 && number != 69 && number != 70) 
+            {
+                e.Handled = true;
+            }
+        }
+
+        private string GetRandomValue()
+        {
+            var random = new Random();
+            var str = "1";
+
+            for(int i=0;i< random.Next(2,12);i++)
+            {
+                str += random.Next(0, 2).ToString();
+            }
+
+            return str;
         }
     }
 }
